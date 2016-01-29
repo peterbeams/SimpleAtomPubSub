@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using SimpleAtomPubSub.Feed;
 using SimpleAtomPubSub.Formatters;
 using SimpleAtomPubSub.Persistance;
@@ -11,12 +12,28 @@ namespace SimpleAtomPubSub
     {
         public static IEventFeed AsAPublisher(string connectionStringName)
         {
-            return new EventFeed
+            var feed = new EventFeed
             {
                 EventPeristance = new SqlPersistance(connectionStringName),
                 Serializer = new SimpleXmlMessageSerializaion(),
                 Syndication = new AtomFormatter()
             };
+
+            new Thread(() =>
+            {
+                do
+                {
+                    Thread.Sleep(new TimeSpan(0, 5, 0));
+                    feed.ArhiveWorkingFeed();
+                } while (true);
+            }).Start();
+
+            return feed;
+        }
+
+        private static void ArchiveFeedEvery5Minutes()
+        {
+            
         }
 
         public static IEventFeedSubscription AsASubscriber(string endpoint, Type[] eventTypes, Type[] handlerTypes)
