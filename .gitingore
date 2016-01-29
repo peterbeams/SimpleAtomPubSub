@@ -1,0 +1,9 @@
+*.user
+*.dll
+*.exe
+*.pdb
+bin
+obj
+*.suo
+_Resharper*
+BuildOutput

@@ -1,0 +1,11 @@
+C:\src\spikes\atomPubSub\Bugle\SimpleAtomPubSub.Tests\obj\Debug\SimpleAtomPubSub.Tests.csprojResolveAssemblyReference.cache
+C:\src\spikes\atomPubSub\Bugle\SimpleAtomPubSub.Tests\bin\Debug\SimpleAtomPubSub.Tests.dll
+C:\src\spikes\atomPubSub\Bugle\SimpleAtomPubSub.Tests\bin\Debug\SimpleAtomPubSub.Tests.pdb
+C:\src\spikes\atomPubSub\Bugle\SimpleAtomPubSub.Tests\bin\Debug\Moq.dll
+C:\src\spikes\atomPubSub\Bugle\SimpleAtomPubSub.Tests\bin\Debug\nunit.framework.dll
+C:\src\spikes\atomPubSub\Bugle\SimpleAtomPubSub.Tests\bin\Debug\SimpleAtomPubSub.dll
+C:\src\spikes\atomPubSub\Bugle\SimpleAtomPubSub.Tests\bin\Debug\SimpleAtomPubSub.pdb
+C:\src\spikes\atomPubSub\Bugle\SimpleAtomPubSub.Tests\bin\Debug\Moq.xml
+C:\src\spikes\atomPubSub\Bugle\SimpleAtomPubSub.Tests\bin\Debug\nunit.framework.xml
+C:\src\spikes\atomPubSub\Bugle\SimpleAtomPubSub.Tests\obj\Debug\SimpleAtomPubSub.Tests.dll
+C:\src\spikes\atomPubSub\Bugle\SimpleAtomPubSub.Tests\obj\Debug\SimpleAtomPubSub.Tests.pdb
