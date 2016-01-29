@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SimpleAtomPubSub</id>
+    <version>1.0.0</version>
+    <authors>Peter Beams</authors>
+    <owners>Peter Beams</owners>
+    <licenseUrl>https://github.com/peterbeams/SimpleAtomPubSub/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/peterbeams/SimpleAtomPubSub</projectUrl>    
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Simple Pub-Sub Implementation using Atom and SQL Server</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Atom PubSub</tags>
+    <dependencies>      
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Configuration" targetFramework="net40" />
+      <frameworkAssembly assemblyName="System.ServiceModel" targetFramework="net40" />
+  	</frameworkAssemblies>
+  </metadata>  
+  <files>
+    <file src="bin\Release\*.dll" target="lib" />
+  </files>
+</package>
