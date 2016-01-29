@@ -1,4 +1,0 @@
-C:\src\spikes\atomPubSub\Bugle\SimpleAtomPubSub\bin\Debug\SimpleAtomPubSub.dll
-C:\src\spikes\atomPubSub\Bugle\SimpleAtomPubSub\bin\Debug\SimpleAtomPubSub.pdb
-C:\src\spikes\atomPubSub\Bugle\SimpleAtomPubSub\obj\Debug\SimpleAtomPubSub.dll
-C:\src\spikes\atomPubSub\Bugle\SimpleAtomPubSub\obj\Debug\SimpleAtomPubSub.pdb
