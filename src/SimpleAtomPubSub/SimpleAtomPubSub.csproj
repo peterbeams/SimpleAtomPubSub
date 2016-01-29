@@ -83,12 +83,15 @@
     <Compile Include="Subscription\HandlerCollection.cs" />
     <Compile Include="Subscription\IEventFeedSubscription.cs" />
     <Compile Include="Subscription\IFeedChainFactory.cs" />
+    <Compile Include="TypeScanningExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Persistance\DDL.sql" />
     <Content Include="Serialization\Xml.Net\License.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="SimpleAtomPubSub.nuspec" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
