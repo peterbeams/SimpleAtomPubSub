@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Xml.Linq;
+using NUnit.Framework;
 using SimpleAtomPubSub.Serialization;
 
 namespace SimpleAtomPubSub.Tests.Serialization
@@ -17,10 +18,7 @@ namespace SimpleAtomPubSub.Tests.Serialization
         {
             var target = new SimpleXmlMessageSerializaion();
             var xml = target.Serialize(new MessageA { Name = "ABC", Duration = 1 });
-            Assert.AreEqual(@"<MessageA>
-  <Name>ABC</Name>
-  <Duration>1</Duration>
-</MessageA>", xml);
+            Assert.AreEqual(XElement.Parse(@"<MessageA><Name>ABC</Name><Duration>1</Duration></MessageA>").ToString(), XElement.Parse(xml).ToString());
         }
 
         [Test]

@@ -9,3 +9,4 @@ _Resharper*
 BuildOutput
 src/packages
 **/*.nupkg
+**/*.vs
