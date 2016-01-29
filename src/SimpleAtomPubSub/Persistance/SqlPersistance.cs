@@ -30,6 +30,13 @@ namespace SimpleAtomPubSub.Persistance
                                         select @newFeedId = @@IDENTITY
                                         update dbo.[Events] set feedId = @newFeedId where feedId = @sourceFeedId
                                     end";
+
+        private const string CreateWorkingFeed = @"if (not exists(select * from dbo.[feeds] where uri = @uri))
+                                  begin
+	                                insert into dbo.[feeds]
+	                                (Uri, CreatedAt)
+	                                select @uri, '2999-12-31'
+                                end";
         private readonly string _connectionString;
 
         public SqlPersistance(string connectionStringName)
@@ -110,6 +117,19 @@ namespace SimpleAtomPubSub.Persistance
                 cmd.Parameters.Add(new SqlParameter("@sourceUri", sourceFeedUri));
                 cmd.Parameters.Add(new SqlParameter("@newUri", archiveFeedUri));
                 cmd.Parameters.Add(new SqlParameter("@createdAt", createdAt));
+
+                c.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void CreateFeedIfNotExists(string feedUri)
+        {
+            using (var c = new SqlConnection(_connectionString))
+            {
+                var cmd = c.CreateCommand();
+                cmd.CommandText = CreateWorkingFeed;
+                cmd.Parameters.Add(new SqlParameter("@uri", feedUri));
 
                 c.Open();
                 cmd.ExecuteNonQuery();

@@ -30,6 +30,11 @@ namespace SimpleAtomPubSub.Feed
             EventPeristance.AddToWorkingFeed(message);
         }
 
+        internal void EnsureWorkingFeedExists()
+        {
+            EventPeristance.CreateFeedIfNotExists(WORKING_FEED_URI);
+        }
+
         public string GetArchiveFeed(string uri, Uri baseUri)
         {
             return GetFeed(uri, baseUri);

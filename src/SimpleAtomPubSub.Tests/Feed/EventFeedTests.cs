@@ -37,6 +37,13 @@ namespace SimpleAtomPubSub.Tests.Feed
         }
 
         [Test]
+        public void EnsureWorkingFeedCreatedTest()
+        {
+            target.EnsureWorkingFeedExists();
+            persistance.Verify(m => m.CreateFeedIfNotExists("/"));
+        }
+
+        [Test]
         public void PublishingAddsMessageToWorkingFeed()
         {
             var message = new object();

@@ -19,6 +19,8 @@ namespace SimpleAtomPubSub
                 Syndication = new AtomFormatter()
             };
 
+            feed.EnsureWorkingFeedExists();
+
             new Thread(() =>
             {
                 do
