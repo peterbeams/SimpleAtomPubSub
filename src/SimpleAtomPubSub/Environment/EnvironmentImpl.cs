@@ -6,6 +6,7 @@ namespace SimpleAtomPubSub.Environment
     internal class EnvironmentImpl : IEnvironment
     {
         public DateTime UtcNow => DateTime.UtcNow;
+
         public object CreateInstance(Type type)
         {
             return Activator.CreateInstance(type);

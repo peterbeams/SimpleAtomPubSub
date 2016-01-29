@@ -9,7 +9,7 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
     public static class DictionarySerializer
     {
         /// <summary>
-        /// Serializes a dictionary (e.g. List<TKey, TValue>, HashTable etc.) into a XElement using options.
+        ///     Serializes a dictionary (e.g. List<TKey, TValue>, HashTable etc.) into a XElement using options.
         /// </summary>
         /// <param name="value">The dictionary to serialize.</param>
         /// <param name="name">The name of the dictionary to serialize.</param>
@@ -18,17 +18,19 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
         /// <param name="valueNames">The optional custom name of dictionary value elements.</param>
         /// <param name="options">Indicates how the output is formatted or serialized.</param>
         /// <returns>The XElement representation of the dictionary.</returns>
-        public static XElement Serialize(object value, string name, string elementNames, string keyNames, string valueNames, XmlConvertOptions options)
+        public static XElement Serialize(object value, string name, string elementNames, string keyNames,
+            string valueNames, XmlConvertOptions options)
         {
             var element = new XElement(name);
 
-            var dictionary = (IDictionary)value;
+            var dictionary = (IDictionary) value;
             foreach (DictionaryEntry dictionaryEntry in dictionary)
             {
                 var keyValueElement = new XElement(elementNames);
-                
+
                 var keyElement = ObjectSerializer.Serialize(dictionaryEntry.Key, keyNames, null, null, null, options);
-                var valueElement = ObjectSerializer.Serialize(dictionaryEntry.Value, valueNames, null, null, null, options);
+                var valueElement = ObjectSerializer.Serialize(dictionaryEntry.Value, valueNames, null, null, null,
+                    options);
 
                 Utilities.AddChildElement(keyElement, keyValueElement);
                 Utilities.AddChildElement(valueElement, keyValueElement);
@@ -40,7 +42,8 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
         }
 
         /// <summary>
-        /// Deserializes the XElement to the dictionary (e.g. Dictionary<TKey, TValue>, HashTable of a specified type using options.
+        ///     Deserializes the XElement to the dictionary (e.g. Dictionary
+        ///     <TKey, TValue>, HashTable of a specified type using options.
         /// </summary>
         /// <param name="type">The type of the dictionary to deserialize.</param>
         /// <param name="parentElement">The parent XElement used to deserialize the dictionary.</param>
@@ -55,7 +58,7 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
             }
             else
             {
-                dictionary = (IDictionary)Activator.CreateInstance(type);
+                dictionary = (IDictionary) Activator.CreateInstance(type);
             }
 
             var elements = parentElement.Elements();
@@ -63,7 +66,7 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
             foreach (var element in elements)
             {
                 var keyValueElements = new List<XElement>(element.Elements());
-                
+
                 if (keyValueElements.Count < 2)
                 {
                     //No fully formed key value pair
@@ -75,7 +78,7 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
 
                 var keyType = Utilities.GetElementType(keyElement, type, 0);
                 var valueType = Utilities.GetElementType(valueElement, type, 1);
-                
+
                 if (keyType != null && valueType != null)
                 {
                     var key = ObjectSerializer.Deserialize(keyType, keyElement, options);
@@ -85,7 +88,8 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
                 }
                 else
                 {
-                    throw new InvalidOperationException("Could not deserialize this non generic dictionary without more type information.");
+                    throw new InvalidOperationException(
+                        "Could not deserialize this non generic dictionary without more type information.");
                 }
             }
 

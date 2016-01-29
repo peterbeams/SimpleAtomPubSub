@@ -7,8 +7,11 @@ namespace SimpleAtomPubSub.Persistance
 {
     public class SqlPersistance : IEventPersistance
     {
-        private const string InsertEvent = @"insert into dbo.[Events] (id, createdAt, body, feedId) select @id, @createdAt, @body, f.id from dbo.[Feeds] f where Uri = @feedUri";
-        private const string GetEventsByFeedUri = @"select e.id, e.createdAt, e.body, f.uri from dbo.[Events] e join dbo.[Feeds] f on e.FeedId = f.Id where f.uri = @uri order by e.CreatedAt desc
+        private const string InsertEvent =
+            @"insert into dbo.[Events] (id, createdAt, body, feedId) select @id, @createdAt, @body, f.id from dbo.[Feeds] f where Uri = @feedUri";
+
+        private const string GetEventsByFeedUri =
+            @"select e.id, e.createdAt, e.body, f.uri from dbo.[Events] e join dbo.[Feeds] f on e.FeedId = f.Id where f.uri = @uri order by e.CreatedAt desc
                                                     select top 1 f2.Id, f2.Uri
                                                     from dbo.feeds f1 
                                                     join dbo.feeds f2 on f1.Uri = @uri and isnull(f1.CreatedAt, '9999-12-31') >= f2.CreatedAt and f1.Id <> f2.Id
@@ -17,6 +20,7 @@ namespace SimpleAtomPubSub.Persistance
                                                     from dbo.feeds f1 
                                                     join dbo.feeds f2 on f1.Uri = @uri and isnull(f1.CreatedAt, '9999-12-31') <= isnull(f2.CreatedAt, '9999-12-31') and f1.Id <> f2.Id
                                                     order by isnull(f2.CreatedAt, '9999-12-31') asc";
+
         private const string MoveEventsToNewFeed = @"declare @sourceFeedId int
                                     declare @newFeedId int
                                     select @sourceFeedId = Id from dbo.[Feeds] where Uri = @sourceUri
@@ -66,28 +70,27 @@ namespace SimpleAtomPubSub.Persistance
                 {
                     while (reader.Read())
                     {
-                        messages.Add(new Message()
+                        messages.Add(new Message
                         {
-                            Body = (string)reader["body"],
-                            CreatedAt = (DateTime)reader["createdAt"],
-                            Id = (Guid)reader["id"],
-                            FeedUri = (string)reader["uri"]
+                            Body = (string) reader["body"],
+                            CreatedAt = (DateTime) reader["createdAt"],
+                            Id = (Guid) reader["id"],
+                            FeedUri = (string) reader["uri"]
                         });
                     }
 
                     reader.NextResult();
                     while (reader.Read())
                     {
-                        prevUri = (string)reader["Uri"];
+                        prevUri = (string) reader["Uri"];
                     }
 
                     reader.NextResult();
                     while (reader.Read())
                     {
-                        nextUri = (string)reader["Uri"];
+                        nextUri = (string) reader["Uri"];
                     }
-
-                }               
+                }
             }
 
             return new FeedData
@@ -112,6 +115,5 @@ namespace SimpleAtomPubSub.Persistance
                 cmd.ExecuteNonQuery();
             }
         }
-
     }
 }

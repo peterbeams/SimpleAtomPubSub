@@ -9,7 +9,7 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
     internal static class ListSerializer
     {
         /// <summary>
-        /// Serializes a list (e.g. List<T>, Array etc.) into a XElement using options.
+        ///     Serializes a list (e.g. List<T>, Array etc.) into a XElement using options.
         /// </summary>
         /// <param name="value">The list to serialize.</param>
         /// <param name="name">The name of the list to serialize.</param>
@@ -20,7 +20,7 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
         {
             var parentElement = new XElement(name);
 
-            var list = (ICollection)value;
+            var list = (ICollection) value;
             foreach (var childValue in list)
             {
                 var childElement = ObjectSerializer.Serialize(childValue, elementNames, null, null, null, options);
@@ -31,7 +31,7 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
         }
 
         /// <summary>
-        /// Deserializes the XElement to the list (e.g. List<T>, Array of a specified type using options.
+        ///     Deserializes the XElement to the list (e.g. List<T>, Array of a specified type using options.
         /// </summary>
         /// <param name="type">The type of the list to deserialize.</param>
         /// <param name="parentElement">The parent XElement used to deserialize the list.</param>
@@ -46,7 +46,7 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
             }
             else
             {
-                list = (IList)Activator.CreateInstance(type);
+                list = (IList) Activator.CreateInstance(type);
             }
 
             var elements = parent.Elements();
@@ -54,15 +54,16 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
             foreach (var element in elements)
             {
                 var elementType = Utilities.GetElementType(element, type, 0);
-                
+
                 if (elementType != null)
                 {
                     var obj = ObjectSerializer.Deserialize(elementType, element, options);
                     list.Add(obj);
                 }
                 else
-                { 
-                        throw new InvalidOperationException("Could not deserialize this non generic dictionary without more type information.");
+                {
+                    throw new InvalidOperationException(
+                        "Could not deserialize this non generic dictionary without more type information.");
                 }
             }
 

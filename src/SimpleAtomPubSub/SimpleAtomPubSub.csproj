@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configure.cs" />
     <Compile Include="Environment\Environment.cs" />
     <Compile Include="Environment\EnvironmentImpl.cs" />
     <Compile Include="Environment\IEnvironment.cs" />
@@ -54,7 +55,7 @@
     <Compile Include="Formatters\ISyndication.cs" />
     <Compile Include="Formatters\RawSyndicationContent.cs" />
     <Compile Include="Handler\IHandler.cs" />
-    <Compile Include="Persistance\Feed.cs" />
+    <Compile Include="Persistance\FeedData.cs" />
     <Compile Include="Persistance\IEventPersistance.cs" />
     <Compile Include="Persistance\Message.cs" />
     <Compile Include="Persistance\SqlPersistance.cs" />
@@ -75,11 +76,13 @@
     <Compile Include="Serialization\Xml.Net\XmlConvertElementsNameAttribute.cs" />
     <Compile Include="Serialization\Xml.Net\XmlConvertIgnoredAttribute.cs" />
     <Compile Include="Serialization\Xml.Net\XmlConvertKeyValueElementAttribute.cs" />
-    <Compile Include="Serialization\Xml.Net\XmlConvertOption.cs" />
+    <Compile Include="Serialization\Xml.Net\XmlConvertOptions.cs" />
     <Compile Include="Subscription\EventFeedSubscription.cs" />
     <Compile Include="Subscription\FeedChain.cs" />
+    <Compile Include="Subscription\FeedChainFactory.cs" />
     <Compile Include="Subscription\HandlerCollection.cs" />
     <Compile Include="Subscription\IEventFeedSubscription.cs" />
+    <Compile Include="Subscription\IFeedChainFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Persistance\DDL.sql" />

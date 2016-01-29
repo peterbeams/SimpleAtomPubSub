@@ -8,7 +8,7 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
     internal class ObjectSerializer
     {
         /// <summary>
-        /// Serializes the specified object to a XElement using options.
+        ///     Serializes the specified object to a XElement using options.
         /// </summary>
         /// <param name="value">The object to serialize.</param>
         /// <param name="name">The name of the object to serialize.</param>
@@ -30,12 +30,15 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
         }
 
         /// <summary>
-        /// Serializes the specified property into a XElement using options.
+        ///     Serializes the specified property into a XElement using options.
         /// </summary>
         /// <param name="property">The property to serialize.</param>
         /// <param name="parentObject">The object that owns the property.</param>
         /// <param name="options">Indicates how the output is formatted or serialized.</param>
-        /// <returns>The XElement representation of the property. May be null if it has no value, cannot be read or written or should be ignored.</returns>
+        /// <returns>
+        ///     The XElement representation of the property. May be null if it has no value, cannot be read or written or
+        ///     should be ignored.
+        /// </returns>
         private static XElement Serialize(PropertyInfo property, object parentObject, XmlConvertOptions options)
         {
             if (Utilities.ShouldIgnoreProperty(property)) //Either we ignore or can't read the property
@@ -75,7 +78,7 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
         }
 
         /// <summary>
-        /// Serializes the specified property into a XElement using options.
+        ///     Serializes the specified property into a XElement using options.
         /// </summary>
         /// <param name="value">The object to serialize.</param>
         /// <param name="name">The name of the object to serialize.</param>
@@ -85,12 +88,13 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
         /// <param name="valueNames">The optional custom name of dictionary value elements.</param>
         /// <param name="options">Indicates how the output is formatted or serialized.</param>
         /// <returns>The XElement representation of the object.</returns>
-        public static XElement Serialize(object value, string name, string elementNames, string keyNames, string valueNames, XmlConvertOptions options)
-        {            
+        public static XElement Serialize(object value, string name, string elementNames, string keyNames,
+            string valueNames, XmlConvertOptions options)
+        {
             XElement element = null;
 
             var objectType = ObjectType.From(value);
-            
+
             if (objectType == ObjectType.Primitive)
             {
                 Debug.Assert(objectType != ObjectType.Other); //For 100% code coverage :/
@@ -131,7 +135,7 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
         }
 
         /// <summary>
-        /// Deserializes the XElement to the specified .NET type using options.
+        ///     Deserializes the XElement to the specified .NET type using options.
         /// </summary>
         /// <param name="type">The type of the deserialized .NET object.</param>
         /// <param name="element">The XElement to deserialize.</param>
@@ -143,7 +147,7 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
             var identifier = Utilities.GetIdentifier(value);
 
             var properties = type.GetTypeInfo().DeclaredProperties;
-            
+
             foreach (var property in properties)
             {
                 DeserializeProperty(property, value, element, options);
@@ -153,13 +157,14 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
         }
 
         /// <summary>
-        /// Deserializes the XElement to the specified property using options.
+        ///     Deserializes the XElement to the specified property using options.
         /// </summary>
         /// <param name="property">The property to deserialize the XElement into.</param>
         /// <param name="parentObject">The object that owns the property.</param>
         /// <param name="parentElement">The parent XElement used to deserialize the property.</param>
         /// <param name="options">Indicates how the output is deserialized.</param>
-        private static void DeserializeProperty(PropertyInfo property, object parentObject, XElement parentElement, XmlConvertOptions options)
+        private static void DeserializeProperty(PropertyInfo property, object parentObject, XElement parentElement,
+            XmlConvertOptions options)
         {
             var name = Utilities.GetIdentifier(property);
             var type = property.PropertyType;
@@ -171,14 +176,10 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
             {
                 property.SetValue(parentObject, value, null);
             }
-            else
-            {
-                //Handle not parsable error
-            }
         }
 
         /// <summary>
-        /// Deserializes the XElement to the object of a specified type using options.
+        ///     Deserializes the XElement to the object of a specified type using options.
         /// </summary>
         /// <param name="type">The type of the object to deserialize.</param>
         /// <param name="parentElement">The parent XElement used to deserialize the object.</param>
@@ -187,7 +188,10 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
         public static object Deserialize(Type type, XElement parentElement, XmlConvertOptions options)
         {
             var value = parentElement?.Value;
-            if (value == null) { return null; } //We might not have an element for a property
+            if (value == null)
+            {
+                return null;
+            } //We might not have an element for a property
 
             var objectType = ObjectType.From(type);
 
@@ -195,18 +199,15 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
             {
                 return PrimitiveSerializer.Deserialize(type, parentElement, options);
             }
-            else if (objectType == ObjectType.Dictionary)
+            if (objectType == ObjectType.Dictionary)
             {
                 return DictionarySerializer.Deserialize(type, parentElement, options);
             }
-            else if (objectType == ObjectType.List)
+            if (objectType == ObjectType.List)
             {
                 return ListSerializer.Deserialize(type, parentElement, options);
             }
-            else
-            {
-                return DeserializeObject(type, parentElement, options);
-            }
+            return DeserializeObject(type, parentElement, options);
         }
     }
 }

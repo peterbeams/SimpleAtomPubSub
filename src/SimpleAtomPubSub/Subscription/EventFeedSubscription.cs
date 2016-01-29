@@ -19,6 +19,15 @@ namespace SimpleAtomPubSub.Subscription
         public Guid? LastObservedEventId { get; set; }
         internal IHandler<object> Handlers { get; set; }
 
+        public void Poll()
+        {
+            do
+            {
+                Run();
+                Thread.Sleep(PollingInterval);
+            } while (true);
+        }
+
         public void Run()
         {
             var feeds = GetFeedsUptoLastSeenMessage(Url.ToString());
@@ -38,15 +47,6 @@ namespace SimpleAtomPubSub.Subscription
             }
         }
 
-        public void Poll()
-        {
-            do
-            {
-                Run();
-                Thread.Sleep(PollingInterval);
-            } while (true);
-        }
-
         private IEnumerable<FeedData> GetFeedsUptoLastSeenMessage(string uri)
         {
             var feedChain = FeedChainFactory.Get(uri, Syndication);
@@ -57,6 +57,5 @@ namespace SimpleAtomPubSub.Subscription
                     yield break;
             }
         }
-
     }
 }

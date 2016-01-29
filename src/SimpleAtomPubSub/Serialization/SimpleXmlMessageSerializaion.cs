@@ -18,12 +18,12 @@ namespace SimpleAtomPubSub.Serialization
             if (type == null)
                 return new MissingMessage();
 
-            return Xml.Net.XmlConvert.DeserializeObject(type, body);
+            return XmlConvert.DeserializeObject(type, body);
         }
 
         public string Serialize(object body)
         {
-            return Xml.Net.XmlConvert.SerializeObject(body, XmlConvertOptions.ExcludeTypes);
+            return XmlConvert.SerializeObject(body, XmlConvertOptions.ExcludeTypes);
         }
     }
 }

@@ -6,19 +6,6 @@ using SimpleAtomPubSub.Persistance;
 
 namespace SimpleAtomPubSub.Subscription
 {
-    public interface IFeedChainFactory
-    {
-        IEnumerable<FeedData> Get(string startUrl, ISyndication syndication);
-    }
-
-    public class FeedChainFactory : IFeedChainFactory
-    {
-        public IEnumerable<FeedData> Get(string startUrl, ISyndication syndication)
-        {
-            return new FeedChain(startUrl, syndication);
-        }
-    }
-
     public class FeedChain : IEnumerable<FeedData>
     {
         private readonly string _startUrl;
@@ -42,8 +29,8 @@ namespace SimpleAtomPubSub.Subscription
 
         public class FeedEnumerator : IEnumerator<FeedData>
         {
-            private string _nextUrlToRead;
             private readonly ISyndication _syndication;
+            private string _nextUrlToRead;
 
             public FeedEnumerator(string startUrl, ISyndication syndication)
             {

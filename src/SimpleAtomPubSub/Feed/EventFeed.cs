@@ -10,7 +10,8 @@ namespace SimpleAtomPubSub.Feed
         private const string WORKING_FEED_URI = "/";
 
         internal EventFeed()
-        { }
+        {
+        }
 
         public IEventPersistance EventPeristance { get; set; }
         public IMessageSerializer Serializer { get; set; }
@@ -18,7 +19,7 @@ namespace SimpleAtomPubSub.Feed
 
         public void Publish<TEvent>(TEvent e)
         {
-            var message = new Message()
+            var message = new Message
             {
                 Body = Serializer.Serialize(e),
                 CreatedAt = Environment.Environment.Current.UtcNow,

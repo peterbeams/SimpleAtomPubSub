@@ -16,11 +16,11 @@ namespace SimpleAtomPubSub.Formatters
 
         public string Build(FeedData dataFeed, Uri baseUri)
         {
-            var feed = new SyndicationFeed()
+            var feed = new SyndicationFeed
             {
                 Id = dataFeed.Id.ToString(),
                 LastUpdatedTime = dataFeed.DateCreated,
-                Items = dataFeed.Messages.Select(x => new SyndicationItem()
+                Items = dataFeed.Messages.Select(x => new SyndicationItem
                 {
                     Content = new RawSyndicationContent(x.Body),
                     Id = x.Id.ToString(),
@@ -29,10 +29,12 @@ namespace SimpleAtomPubSub.Formatters
             };
 
             if (!string.IsNullOrEmpty(dataFeed.NextUri))
-                feed.Links.Add(new SyndicationLink(new Uri(baseUri, dataFeed.NextUri), NextInArchiveRelationshipType, "Next In Archive", ContentType, 0));
+                feed.Links.Add(new SyndicationLink(new Uri(baseUri, dataFeed.NextUri), NextInArchiveRelationshipType,
+                    "Next In Archive", ContentType, 0));
 
             if (!string.IsNullOrEmpty(dataFeed.PreviousUri))
-                feed.Links.Add(new SyndicationLink(new Uri(baseUri, dataFeed.PreviousUri), PrevInArchiveRelationshipType, "Previous In Archive", ContentType, 0));
+                feed.Links.Add(new SyndicationLink(new Uri(baseUri, dataFeed.PreviousUri), PrevInArchiveRelationshipType,
+                    "Previous In Archive", ContentType, 0));
 
             var formatter = new Atom10FeedFormatter(feed);
 
@@ -77,7 +79,7 @@ namespace SimpleAtomPubSub.Formatters
         private static string GetXmlString(SyndicationItem x)
         {
             var element = ((XmlSyndicationContent) x.Content).ReadContent<XElement>().ToString();
-            
+
             //strip out the annoying xml ns added by atom
             element = element.Replace(@" xmlns=""http://www.w3.org/2005/Atom""", string.Empty);
 

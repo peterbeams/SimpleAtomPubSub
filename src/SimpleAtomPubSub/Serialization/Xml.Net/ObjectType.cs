@@ -66,46 +66,44 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net
         }
 
         /// <summary>
-        /// Checks if the type is a fundamental primitive object (e.g string, int etc.).
+        ///     Checks if the type is a fundamental primitive object (e.g string, int etc.).
         /// </summary>
         /// <param name="type">The type to check.</param>
         /// <returns>The boolean value indicating whether the type is a fundamental primitive.</returns>
-        private static bool IsPrimitive(Type type) => (
-            type.Equals(typeof(string))
-            || type.Equals(typeof(char))
-            || type.Equals(typeof(sbyte))
-            || type.Equals(typeof(short))
-            || type.Equals(typeof(int))
-            || type.Equals(typeof(long))
-            || type.Equals(typeof(byte))
-            || type.Equals(typeof(ushort))
-            || type.Equals(typeof(uint))
-            || type.Equals(typeof(ulong))
-            || type.Equals(typeof(double))
-            || type.Equals(typeof(float))
-            || type.Equals(typeof(decimal))
-            || type.Equals(typeof(bool))
-            || type.Equals(typeof(DateTime))
-            );
+        private static bool IsPrimitive(Type type) => type.Equals(typeof (string))
+                                                      || type.Equals(typeof (char))
+                                                      || type.Equals(typeof (sbyte))
+                                                      || type.Equals(typeof (short))
+                                                      || type.Equals(typeof (int))
+                                                      || type.Equals(typeof (long))
+                                                      || type.Equals(typeof (byte))
+                                                      || type.Equals(typeof (ushort))
+                                                      || type.Equals(typeof (uint))
+                                                      || type.Equals(typeof (ulong))
+                                                      || type.Equals(typeof (double))
+                                                      || type.Equals(typeof (float))
+                                                      || type.Equals(typeof (decimal))
+                                                      || type.Equals(typeof (bool))
+                                                      || type.Equals(typeof (DateTime));
 
         /// <summary>
-        /// Checks if the type is a list (e.g List<T>, Array etc.).
+        ///     Checks if the type is a list (e.g List<T>, Array etc.).
         /// </summary>
         /// <param name="type">The type to check.</param>
         /// <returns>The boolean value indicating whether the type is a list.</returns>
         private static bool IsList(Type type)
         {
-            return typeof(ICollection).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+            return typeof (ICollection).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
         }
 
         /// <summary>
-        /// Checks if the object is a dictionary (e.g Dictionary<TKey, TValue>, HashTable etc.).
+        ///     Checks if the object is a dictionary (e.g Dictionary<TKey, TValue>, HashTable etc.).
         /// </summary>
         /// <param name="value">The object to check.</param>
         /// <returns>The boolean value indicating whether the object is a dictionary.</returns>
         public static bool IsDictionary(Type type)
         {
-            return typeof(IDictionary).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
+            return typeof (IDictionary).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
         }
     }
 }

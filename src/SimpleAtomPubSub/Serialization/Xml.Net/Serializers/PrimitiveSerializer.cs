@@ -6,7 +6,7 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
     public static class PrimitiveSerializer
     {
         /// <summary>
-        /// Serializes a fundamental primitive object (e.g. string, int etc.) into a XElement using options.
+        ///     Serializes a fundamental primitive object (e.g. string, int etc.) into a XElement using options.
         /// </summary>
         /// <param name="value">The primitive to serialize.</param>
         /// <param name="name">The name of the primitive to serialize.</param>
@@ -19,9 +19,9 @@ namespace SimpleAtomPubSub.Serialization.Xml.Net.Serializers
             var element = new XElement(name, stringValue);
             return element;
         }
-        
+
         /// <summary>
-        /// Deserializes the XElement to the fundamental primitive (e.g. string, int etc.) of a specified type using options.
+        ///     Deserializes the XElement to the fundamental primitive (e.g. string, int etc.) of a specified type using options.
         /// </summary>
         /// <param name="type">The type of the fundamental primitive to deserialize.</param>
         /// <param name="parentElement">The parent XElement used to deserialize the fundamental primitive.</param>
