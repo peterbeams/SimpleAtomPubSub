@@ -41,7 +41,12 @@ namespace SimpleAtomPubSub.Persistance
 
         public SqlPersistance(string connectionStringName)
         {
-            _connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+            var cs = ConfigurationManager.ConnectionStrings[connectionStringName];
+
+            if (cs == null)
+                throw new ConfigurationErrorsException($"App/Web.config file is missing connection string with name '{connectionStringName}'.");
+
+            _connectionString = cs.ConnectionString;
         }
 
         public void AddToWorkingFeed(Message e)
