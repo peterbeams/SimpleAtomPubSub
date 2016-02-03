@@ -2,6 +2,6 @@
 {
     public interface IEventFeedSubscription
     {
-        void Poll();
+        void Subscribe();
     }
 }

@@ -72,7 +72,7 @@ namespace SimpleAtomPubSub.Tests.Subscription
             handlers.Setup(m => m.Handle(messageC));
             handlers.Setup(m => m.Handle(messageD));
 
-            target.Run();
+            target.HandleLatestEvents();
 
             handlers.Verify(m => m.Handle(messageA), Times.Once);
             handlers.Verify(m => m.Handle(messageB), Times.Once);
@@ -121,7 +121,7 @@ namespace SimpleAtomPubSub.Tests.Subscription
             handlers.Setup(m => m.Handle(messageC));
             
             target.LastObservedEventId = new Guid("40000000-0000-0000-0000-000000000000");
-            target.Run();
+            target.HandleLatestEvents();
 
             handlers.Verify(m => m.Handle(messageA), Times.Once);
             handlers.Verify(m => m.Handle(messageB), Times.Once);

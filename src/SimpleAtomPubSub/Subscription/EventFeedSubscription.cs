@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using SimpleAtomPubSub.Formatters;
 using SimpleAtomPubSub.Handler;
 using SimpleAtomPubSub.Persistance;
@@ -19,16 +20,26 @@ namespace SimpleAtomPubSub.Subscription
         public Guid? LastObservedEventId { get; set; }
         internal IHandler<object> Handlers { get; set; }
 
-        public void Poll()
+        public void Subscribe()
+        {
+            Task.Factory.StartNew(Poll);
+        }
+
+        internal async void Poll()
         {
             do
             {
-                Run();
+                var x = await HandleLatestEventsAsync();
                 Thread.Sleep(PollingInterval);
             } while (true);
         }
 
-        public void Run()
+        private Task<bool> HandleLatestEventsAsync()
+        {
+            return Task.Factory.StartNew(HandleLatestEvents);
+        }
+
+        internal bool HandleLatestEvents()
         {
             var feeds = GetFeedsUptoLastSeenMessage(Url.ToString());
             var messages = feeds.SelectMany(x => x.Messages);
@@ -45,6 +56,8 @@ namespace SimpleAtomPubSub.Subscription
 
                 LastObservedEventId = m.Id;
             }
+
+            return newEvents.Any();
         }
 
         private IEnumerable<FeedData> GetFeedsUptoLastSeenMessage(string uri)
