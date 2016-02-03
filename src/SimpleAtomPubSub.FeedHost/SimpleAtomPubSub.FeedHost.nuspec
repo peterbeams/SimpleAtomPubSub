@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>SimpleAtomPubSub</id>
+    <id>SimpleAtomPubSub.FeedHost</id>
     <version>$version$</version>
     <authors>Peter Beams</authors>
     <owners>Peter Beams</owners>
@@ -12,7 +12,10 @@
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>Atom PubSub</tags>
-    <dependencies>      
+    <dependencies>
+      <dependency id="SimpleAtomPubSub" version="$version$" />
+      <dependency id="Nancy" version="1.4.3" />
+      <dependency id="Nancy.Hosting.Aspnet" version="1.4.1" />
     </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System.Configuration" targetFramework="net40" />
