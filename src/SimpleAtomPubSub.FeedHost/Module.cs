@@ -15,8 +15,8 @@ namespace SimpleAtomPubSub.FeedHost
         {
             feed = SimpleAtomPubSub.Configure.AsAPublisher("EventStore");
 
-            Get["/"] = _ => feed.GetWorkingFeed(new Uri(Context.Request.Url.BasePath));
-            Get["/{name}"] = parameters => feed.GetArchiveFeed(string.Concat("/", parameters.name), new Uri(Context.Request.Url.BasePath));
+            Get["/"] = _ => feed.GetWorkingFeed(new Uri(Context.Request.Url.SiteBase));
+            Get["/{name}"] = parameters => feed.GetArchiveFeed(string.Concat("/", parameters.name), new Uri(Context.Request.Url.SiteBase));
         }
     }
 }
