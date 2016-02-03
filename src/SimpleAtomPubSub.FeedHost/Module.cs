@@ -13,7 +13,7 @@ namespace SimpleAtomPubSub.FeedHost
         
         public FeedModule()
         {
-            feed = SimpleAtomPubSub.Configure.AsAPublisher("EventStore");
+            feed = SimpleAtomPubSub.Configure.AsADirectFeedReader("EventStore");
 
             Get["/"] = _ => feed.GetWorkingFeed(new Uri(Context.Request.Url.SiteBase));
             Get["/{name}"] = parameters => feed.GetArchiveFeed(string.Concat("/", parameters.name), new Uri(Context.Request.Url.SiteBase));

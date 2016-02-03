@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using SimpleAtomPubSub.Feed;
 using SimpleAtomPubSub.Formatters;
 using SimpleAtomPubSub.Persistance;
@@ -10,7 +11,7 @@ namespace SimpleAtomPubSub
 {
     public class Configure
     {
-        public static IEventFeed AsAPublisher(string connectionStringName)
+        internal static IEventFeed AsADirectFeedReader(string connectionStringName)
         {
             var feed = new EventFeed
             {
@@ -21,23 +22,25 @@ namespace SimpleAtomPubSub
 
             feed.EnsureWorkingFeedExists();
 
-            new Thread(() =>
+            return feed;
+        }
+
+        public static IEventFeed AsAPublisher(string connectionStringName)
+        {
+            var feed = AsADirectFeedReader(connectionStringName);
+
+            Task.Factory.StartNew(() =>
             {
                 do
                 {
                     Thread.Sleep(new TimeSpan(0, 5, 0));
-                    feed.ArhiveWorkingFeed();
+                    Task.Factory.StartNew(() => feed.ArhiveWorkingFeed()).Wait();
                 } while (true);
-            }).Start();
+            });
 
             return feed;
         }
-
-        private static void ArchiveFeedEvery5Minutes()
-        {
-            
-        }
-
+        
         public static IEventFeedSubscription AsASubscriber(string endpoint, Type[] eventTypes, Type[] handlerTypes)
         {
             var handlerCollection = new HandlerCollection();
