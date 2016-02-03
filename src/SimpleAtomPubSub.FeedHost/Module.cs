@@ -10,14 +10,13 @@ namespace SimpleAtomPubSub.FeedHost
     public class FeedModule : Nancy.NancyModule
     {
         internal static IEventFeed feed;
-        internal static Uri feedUrl = new Uri("http://localhost:12345");
-
+        
         public FeedModule()
         {
             feed = SimpleAtomPubSub.Configure.AsAPublisher("EventStore");
 
-            Get["/"] = _ => feed.GetWorkingFeed(feedUrl);
-            Get["/{name}"] = parameters => feed.GetArchiveFeed(string.Concat("/", parameters.name), feedUrl);
+            Get["/"] = _ => feed.GetWorkingFeed(new Uri(Context.Request.Url.BasePath));
+            Get["/{name}"] = parameters => feed.GetArchiveFeed(string.Concat("/", parameters.name), new Uri(Context.Request.Url.BasePath));
         }
     }
 }
