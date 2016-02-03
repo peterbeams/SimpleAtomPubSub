@@ -86,8 +86,8 @@
     <Compile Include="TypeScanningExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Persistance\DDL.sql" />
-    <Content Include="Serialization\Xml.Net\License.txt" />
+    <EmbeddedResource Include="Persistance\DDL.sql" />
+    <None Include="Serialization\Xml.Net\License.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleAtomPubSub.nuspec" />
