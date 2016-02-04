@@ -10,7 +10,7 @@ namespace SimpleAtomPubSub.Subscriber.DeadLetter
     {
         private readonly IDeadLetterPersistance _persistance;
         public event EventHandler<Message> MessageReadyForRetry;
-
+        
         public TimeSpan PollingInterval { get; set; } = new TimeSpan(0, 1, 0);
 
         public FailureChannel(IDeadLetterPersistance persistance)
@@ -52,6 +52,11 @@ namespace SimpleAtomPubSub.Subscriber.DeadLetter
         protected virtual void OnMessageReadyForRetry(Message e)
         {
             MessageReadyForRetry?.Invoke(this, e);
+        }
+
+        public void ClearFailure(Message message)
+        {
+            _persistance.ClearFailure(message);
         }
     }
 }

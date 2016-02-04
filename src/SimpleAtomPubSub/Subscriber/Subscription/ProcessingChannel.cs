@@ -9,6 +9,7 @@ namespace SimpleAtomPubSub.Subscriber.Subscription
     public class ProcessingChannel
     {
         public event EventHandler<MessageFailedEventArgs> MessageFailed;
+        public event EventHandler<Message> MessageProcessed;
         
         private readonly IMessageDeserializer _deserializer;
         private readonly IHandler<object> _handlers;
@@ -25,6 +26,7 @@ namespace SimpleAtomPubSub.Subscriber.Subscription
             {
                 var mbody = _deserializer.Deserialize(message.Body);
                 _handlers.Handle(mbody);
+                MessageProcessed?.Invoke(this, message);
             }
             catch (Exception ex)
             {

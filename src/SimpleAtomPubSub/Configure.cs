@@ -74,6 +74,9 @@ namespace SimpleAtomPubSub
             //process failed messages again when they're reader
             failureChannel.MessageReadyForRetry += processingChannel.ProcessEvent;
 
+            //remove failed messages once they're successfully processed
+            processingChannel.MessageProcessed += (sender, message) => failureChannel.ClearFailure(message);
+
             failureChannel.Poll();
 
             return subscription;

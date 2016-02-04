@@ -8,5 +8,6 @@ namespace SimpleAtomPubSub.Subscriber.Persistance
     {
         void Deadletter(Message message, Exception ex);
         IEnumerable<Message> PullRetries();
+        void ClearFailure(Message message);
     }
 }

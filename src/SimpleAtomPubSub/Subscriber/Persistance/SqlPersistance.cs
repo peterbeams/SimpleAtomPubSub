@@ -14,6 +14,8 @@ namespace SimpleAtomPubSub.Subscriber.Persistance
     {
         private readonly string _connectionString;
 
+        private const string DeleteFromDeadLetter = @"delete from dbo.DeadLetter where Id = @id";
+
         private const string InsertOrUpdateIntoDeadLetter = @"begin tran
             if (exists(select * from dbo.DeadLetter where Id = @Id))
             begin
@@ -106,6 +108,20 @@ namespace SimpleAtomPubSub.Subscriber.Persistance
                 }
 
                 return result;
+            }
+        }
+
+        public void ClearFailure(Message message)
+        {
+            using (var c = new SqlConnection(_connectionString))
+            {
+                var cmd = c.CreateCommand();
+                cmd.CommandText = DeleteFromDeadLetter;
+
+                cmd.Parameters.Add(new SqlParameter("@Id", message.Id));
+                
+                c.Open();
+                cmd.ExecuteNonQuery();
             }
         }
 
