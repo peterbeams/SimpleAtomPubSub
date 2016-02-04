@@ -7,6 +7,7 @@ using SimpleAtomPubSub.Publisher.Persistance;
 using SimpleAtomPubSub.Serialization;
 using SimpleAtomPubSub.Subscriber.Feed;
 using SimpleAtomPubSub.Subscriber.Handlers;
+using SimpleAtomPubSub.Subscriber.Persistance;
 using SimpleAtomPubSub.Subscriber.Subscription;
 
 namespace SimpleAtomPubSub.Tests.Subscription
@@ -18,6 +19,7 @@ namespace SimpleAtomPubSub.Tests.Subscription
         private Mock<IFeedChainFactory> feedChainFactory;
         private Mock<ISyndicationFormatter> syndication;
         private Mock<EventHandler<Message>> messageReceivedHandler;
+        private Mock<ISubscriptionPersistance> _persistance;
 
         [SetUp]
         public void SetUp()
@@ -25,8 +27,9 @@ namespace SimpleAtomPubSub.Tests.Subscription
             feedChainFactory = new Mock<IFeedChainFactory>();
             syndication = new Mock<ISyndicationFormatter>();
             messageReceivedHandler = new Mock<EventHandler<Message>>(MockBehavior.Strict);
+            _persistance = new Mock<ISubscriptionPersistance>();
 
-            target = new EventFeedObserver(new Uri("https://feeds.sample.com/"), syndication.Object, feedChainFactory.Object);
+            target = new EventFeedObserver(new Uri("https://feeds.sample.com/"), syndication.Object, feedChainFactory.Object, _persistance.Object);
             target.EventReceived += messageReceivedHandler.Object;
         }
 

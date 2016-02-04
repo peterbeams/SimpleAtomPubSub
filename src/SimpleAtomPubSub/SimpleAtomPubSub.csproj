@@ -80,6 +80,7 @@
     <Compile Include="Serialization\Xml.Net\XmlConvertKeyValueElementAttribute.cs" />
     <Compile Include="Serialization\Xml.Net\XmlConvertOptions.cs" />
     <Compile Include="Subscriber\Persistance\IDeadLetterPersistance.cs" />
+    <Compile Include="Subscriber\Persistance\ISubscriptionPersistance.cs" />
     <Compile Include="Subscriber\Persistance\SqlPersistance.cs" />
     <Compile Include="Subscriber\Subscription\EventFeedObserver.cs" />
     <Compile Include="Subscriber\Feed\FeedChain.cs" />

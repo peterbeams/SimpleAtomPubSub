@@ -10,7 +10,7 @@ using SimpleAtomPubSub.Publisher.Persistance;
 
 namespace SimpleAtomPubSub.Subscriber.Persistance
 {
-    public class SqlPersistance : IDeadLetterPersistance
+    public class SqlPersistance : IDeadLetterPersistance, ISubscriptionPersistance
     {
         private readonly string _connectionString;
 
@@ -40,6 +40,19 @@ namespace SimpleAtomPubSub.Subscriber.Persistance
             select Id, CreatedAt, Body, FeedUrl from dbo.[DeadLetter] where ReadyToRetry = 1 and BeingRetried = 0
             update dbo.[DeadLetter] set BeingRetried = 1 where ReadyToRetry = 1 and BeingRetried = 0
             commit";
+
+        private const string RegisterSubscrition = @"if (not exists(select * from dbo.Subscriptions where Url = @Url))
+            begin
+	            insert into dbo.Subscriptions
+	            (Url, LastObservedEventId)
+	            values
+	            (@Url, null)	
+            end
+            select Id from dbo.Subscriptions where url = @Url";
+
+        private const string UpdateLastSeenEvent = @"update dbo.Subscriptions set LastObservedEventId = @LastObservedEventId where Id = @Id";
+
+        private const string GetLastObservedEvent = @"select LastObservedEventId from dbo.Subscriptions where Id = @Id";
 
         public SqlPersistance(string connectionStringName)
         {
@@ -93,6 +106,49 @@ namespace SimpleAtomPubSub.Subscriber.Persistance
                 }
 
                 return result;
+            }
+        }
+
+        public int Register(string url)
+        {
+            using (var c = new SqlConnection(_connectionString))
+            {
+                var cmd = c.CreateCommand();
+                cmd.CommandText = RegisterSubscrition;
+
+                cmd.Parameters.Add(new SqlParameter("@Url", url));
+
+                c.Open();
+                return (int) cmd.ExecuteScalar();
+            }
+        }
+
+        public void SetLastObservedEvent(int id, Guid eventId)
+        {
+            using (var c = new SqlConnection(_connectionString))
+            {
+                var cmd = c.CreateCommand();
+                cmd.CommandText = UpdateLastSeenEvent;
+
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+                cmd.Parameters.Add(new SqlParameter("@LastObservedEventId", eventId));
+
+                c.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public Guid? GetLastObservedEventId(int id)
+        {
+            using (var c = new SqlConnection(_connectionString))
+            {
+                var cmd = c.CreateCommand();
+                cmd.CommandText = GetLastObservedEvent;
+
+                cmd.Parameters.Add(new SqlParameter("@Id", id));
+
+                c.Open();
+                return (Guid?)cmd.ExecuteScalar();
             }
         }
     }

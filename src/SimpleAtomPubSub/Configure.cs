@@ -51,16 +51,16 @@ namespace SimpleAtomPubSub
 
             var deserializer = new SimpleXmlMessageSerializaion { MessageTypes = eventTypes };
 
-            var deadLetterPersistance = new Subscriber.Persistance.SqlPersistance(connectionStringName);
+            var subscriberPersistance = new Subscriber.Persistance.SqlPersistance(connectionStringName);
 
-            var failureChannel = new FailureChannel(deadLetterPersistance)
+            var failureChannel = new FailureChannel(subscriberPersistance)
             {
                 PollingInterval = new TimeSpan(0, 1, 0)
             };
 
             var processingChannel = new ProcessingChannel(deserializer, handlerCollection);
 
-            var subscription = new EventFeedObserver(new Uri(endpoint), new AtomFormatter(), new FeedChainFactory())
+            var subscription = new EventFeedObserver(new Uri(endpoint), new AtomFormatter(), new FeedChainFactory(), subscriberPersistance)
             {
                 PollingInterval = new TimeSpan(0, 1, 0)
             };

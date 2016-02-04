@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SimpleAtomPubSub.Formatters;
 using SimpleAtomPubSub.Publisher.Persistance;
 using SimpleAtomPubSub.Subscriber.Feed;
+using SimpleAtomPubSub.Subscriber.Persistance;
 
 namespace SimpleAtomPubSub.Subscriber.Subscription
 {
@@ -14,17 +15,23 @@ namespace SimpleAtomPubSub.Subscriber.Subscription
         private readonly Uri _uri;
         private readonly ISyndicationFormatter _atomFormatter;
         private readonly IFeedChainFactory _feedChainFactory;
+        private readonly ISubscriptionPersistance _persistance;
+        private readonly int _subscriptionId;
 
         public event EventHandler<Message> EventReceived;
 
         public TimeSpan PollingInterval { get; set; }
         public Guid? LastObservedEventId { get; set; }
 
-        public EventFeedObserver(Uri uri, ISyndicationFormatter atomFormatter, IFeedChainFactory feedChainFactory)
+        public EventFeedObserver(Uri uri, ISyndicationFormatter atomFormatter, IFeedChainFactory feedChainFactory, ISubscriptionPersistance persistance)
         {
             _uri = uri;
             _atomFormatter = atomFormatter;
             _feedChainFactory = feedChainFactory;
+            _persistance = persistance;
+
+            _subscriptionId = _persistance.Register(uri.ToString());
+            LastObservedEventId = _persistance.GetLastObservedEventId(_subscriptionId);
         }
 
         public void StartWatching()
@@ -60,6 +67,7 @@ namespace SimpleAtomPubSub.Subscriber.Subscription
             {
                 OnEventReceived(m);
                 LastObservedEventId = m.Id;
+                _persistance.SetLastObservedEvent(_subscriptionId, m.Id);
             }
 
             return newEvents.Any();
