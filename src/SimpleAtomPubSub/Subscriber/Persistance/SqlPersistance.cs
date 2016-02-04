@@ -148,7 +148,7 @@ namespace SimpleAtomPubSub.Subscriber.Persistance
                 cmd.Parameters.Add(new SqlParameter("@Id", id));
 
                 c.Open();
-                return (Guid?)cmd.ExecuteScalar();
+                return cmd.ExecuteScalar() as Guid?;
             }
         }
     }
