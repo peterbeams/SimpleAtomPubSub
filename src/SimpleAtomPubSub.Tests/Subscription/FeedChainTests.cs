@@ -27,7 +27,7 @@ namespace SimpleAtomPubSub.Tests.Subscription
         {
             var feed1 = new FeedData() { };
             environment.Setup(m => m.DownloadString("https://feeds.sample.com/")).Returns("<feed>1</feed>");
-            syndication.Setup(m => m.Build("<feed>1</feed>")).Returns(feed1);
+            syndication.Setup(m => m.Build("<feed>1</feed>", "https://feeds.sample.com/")).Returns(feed1);
 
             var target = new FeedChain("https://feeds.sample.com/", syndication.Object);
             var results = target.ToArray();
@@ -41,15 +41,15 @@ namespace SimpleAtomPubSub.Tests.Subscription
         {
             var feed1 = new FeedData() { PreviousUri = "https://feeds.sample.com/2" };
             environment.Setup(m => m.DownloadString("https://feeds.sample.com/")).Returns("<feed>1</feed>");
-            syndication.Setup(m => m.Build("<feed>1</feed>")).Returns(feed1);
+            syndication.Setup(m => m.Build("<feed>1</feed>", "https://feeds.sample.com/")).Returns(feed1);
 
             var feed2 = new FeedData() { PreviousUri = "https://feeds.sample.com/3" };
             environment.Setup(m => m.DownloadString("https://feeds.sample.com/2")).Returns("<feed>2</feed>");
-            syndication.Setup(m => m.Build("<feed>2</feed>")).Returns(feed2);
+            syndication.Setup(m => m.Build("<feed>2</feed>", "https://feeds.sample.com/2")).Returns(feed2);
 
             var feed3 = new FeedData() { };
             environment.Setup(m => m.DownloadString("https://feeds.sample.com/3")).Returns("<feed>3</feed>");
-            syndication.Setup(m => m.Build("<feed>3</feed>")).Returns(feed3);
+            syndication.Setup(m => m.Build("<feed>3</feed>", "https://feeds.sample.com/3")).Returns(feed3);
 
             var target = new FeedChain("https://feeds.sample.com/", syndication.Object);
             var results = target.ToArray();

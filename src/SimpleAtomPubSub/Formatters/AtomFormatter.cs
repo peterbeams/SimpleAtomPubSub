@@ -47,7 +47,7 @@ namespace SimpleAtomPubSub.Formatters
             return sw.ToString();
         }
 
-        public FeedData Build(string data)
+        public FeedData Build(string data, string url)
         {
             var formatter = new Atom10FeedFormatter();
             using (var reader = new StringReader(data))
@@ -68,7 +68,8 @@ namespace SimpleAtomPubSub.Formatters
                             {
                                 Body = GetXmlString(x),
                                 CreatedAt = x.LastUpdatedTime.UtcDateTime,
-                                Id = Guid.Parse(x.Id)
+                                Id = Guid.Parse(x.Id),
+                                FeedUri = url
                             };
                         }).ToArray()
                     };

@@ -48,7 +48,7 @@ namespace SimpleAtomPubSub.Subscriber.Feed
                     return false;
 
                 var feedData = Environment.Environment.Current.DownloadString(_nextUrlToRead);
-                Current = _syndicationFormatter.Build(feedData);
+                Current = _syndicationFormatter.Build(feedData, _nextUrlToRead);
                 _nextUrlToRead = Current.PreviousUri;
 
                 return true;

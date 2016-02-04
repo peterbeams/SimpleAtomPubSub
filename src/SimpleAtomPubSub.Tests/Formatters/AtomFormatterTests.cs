@@ -50,7 +50,7 @@ namespace SimpleAtomPubSub.Tests.Formatters
         [Test]
         public void BuildFromFeedXml()
         {
-            var result = target.Build(SampleFeed);
+            var result = target.Build(SampleFeed, "https://feeds.sample.com/");
 
             Assert.IsNotNull(result);
             Assert.AreEqual(new Guid("a88e560c-a96d-4ce4-8d11-5e4112b53df8"), result.Id);
