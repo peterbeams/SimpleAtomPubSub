@@ -4,23 +4,30 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using SimpleAtomPubSub.Formatters;
-using SimpleAtomPubSub.Handler;
-using SimpleAtomPubSub.Persistance;
-using SimpleAtomPubSub.Serialization;
+using SimpleAtomPubSub.Publisher.Persistance;
+using SimpleAtomPubSub.Subscriber.Feed;
 
-namespace SimpleAtomPubSub.Subscription
+namespace SimpleAtomPubSub.Subscriber.Subscription
 {
-    public class EventFeedSubscription : IEventFeedSubscription
+    public class EventFeedObserver : IEventFeedSubscription
     {
-        public Uri Url { get; set; }
-        public IFeedChainFactory FeedChainFactory { get; set; }
-        public ISyndication Syndication { get; set; }
-        public TimeSpan PollingInterval { get; set; }
-        public IMessageDeserializer Deserializer { get; set; }
-        public Guid? LastObservedEventId { get; set; }
-        internal IHandler<object> Handlers { get; set; }
+        private readonly Uri _uri;
+        private readonly ISyndicationFormatter _atomFormatter;
+        private readonly IFeedChainFactory _feedChainFactory;
 
-        public void Subscribe()
+        public event EventHandler<Message> EventReceived;
+
+        public TimeSpan PollingInterval { get; set; }
+        public Guid? LastObservedEventId { get; set; }
+
+        public EventFeedObserver(Uri uri, ISyndicationFormatter atomFormatter, IFeedChainFactory feedChainFactory)
+        {
+            _uri = uri;
+            _atomFormatter = atomFormatter;
+            _feedChainFactory = feedChainFactory;
+        }
+
+        public void StartWatching()
         {
             Task.Factory.StartNew(Poll);
         }
@@ -36,12 +43,12 @@ namespace SimpleAtomPubSub.Subscription
 
         private Task<bool> HandleLatestEventsAsync()
         {
-            return Task.Factory.StartNew(HandleLatestEvents);
+            return Task.Factory.StartNew(ReceiveLatestEvents);
         }
 
-        internal bool HandleLatestEvents()
+        internal bool ReceiveLatestEvents()
         {
-            var feeds = GetFeedsUptoLastSeenMessage(Url.ToString());
+            var feeds = GetFeedsUptoLastSeenMessage(_uri.ToString());
             var messages = feeds.SelectMany(x => x.Messages);
 
             var newEvents = messages
@@ -51,9 +58,7 @@ namespace SimpleAtomPubSub.Subscription
 
             foreach (var m in newEvents)
             {
-                var mo = Deserializer.Deserialize(m.Body);
-                Handlers.Handle(mo);
-
+                OnEventReceived(m);
                 LastObservedEventId = m.Id;
             }
 
@@ -62,13 +67,18 @@ namespace SimpleAtomPubSub.Subscription
 
         private IEnumerable<FeedData> GetFeedsUptoLastSeenMessage(string uri)
         {
-            var feedChain = FeedChainFactory.Get(uri, Syndication);
+            var feedChain = _feedChainFactory.Get(uri, _atomFormatter);
             foreach (var feed in feedChain)
             {
                 yield return feed;
                 if (feed.Messages.Any(x => x.Id == LastObservedEventId))
                     yield break;
             }
+        }
+
+        protected virtual void OnEventReceived(Message e)
+        {
+            EventReceived?.Invoke(this, e);
         }
     }
 }

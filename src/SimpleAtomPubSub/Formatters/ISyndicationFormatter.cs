@@ -1,9 +1,9 @@
 ﻿using System;
-using SimpleAtomPubSub.Persistance;
+using SimpleAtomPubSub.Publisher.Persistance;
 
 namespace SimpleAtomPubSub.Formatters
 {
-    public interface ISyndication
+    public interface ISyndicationFormatter
     {
         string Build(FeedData message, Uri baseUri);
         FeedData Build(string data);

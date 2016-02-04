@@ -2,7 +2,7 @@
 using System.Linq;
 using NUnit.Framework;
 using SimpleAtomPubSub.Formatters;
-using SimpleAtomPubSub.Persistance;
+using SimpleAtomPubSub.Publisher.Persistance;
 
 namespace SimpleAtomPubSub.Tests.Formatters
 {

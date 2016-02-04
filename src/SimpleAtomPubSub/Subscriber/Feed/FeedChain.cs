@@ -2,40 +2,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using SimpleAtomPubSub.Formatters;
-using SimpleAtomPubSub.Persistance;
+using SimpleAtomPubSub.Publisher.Persistance;
 
-namespace SimpleAtomPubSub.Subscription
+namespace SimpleAtomPubSub.Subscriber.Feed
 {
     public class FeedChain : IEnumerable<FeedData>
     {
         private readonly string _startUrl;
-        private readonly ISyndication _syndication;
+        private readonly ISyndicationFormatter _syndicationFormatter;
 
-        public FeedChain(string startUrl, ISyndication syndication)
+        public FeedChain(string startUrl, ISyndicationFormatter syndicationFormatter)
         {
             _startUrl = startUrl;
-            _syndication = syndication;
+            _syndicationFormatter = syndicationFormatter;
         }
 
         public IEnumerator<FeedData> GetEnumerator()
         {
-            return new FeedEnumerator(_startUrl, _syndication);
+            return new FeedEnumerator(_startUrl, _syndicationFormatter);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return new FeedEnumerator(_startUrl, _syndication);
+            return new FeedEnumerator(_startUrl, _syndicationFormatter);
         }
 
         public class FeedEnumerator : IEnumerator<FeedData>
         {
-            private readonly ISyndication _syndication;
+            private readonly ISyndicationFormatter _syndicationFormatter;
             private string _nextUrlToRead;
 
-            public FeedEnumerator(string startUrl, ISyndication syndication)
+            public FeedEnumerator(string startUrl, ISyndicationFormatter syndicationFormatter)
             {
                 _nextUrlToRead = startUrl;
-                _syndication = syndication;
+                _syndicationFormatter = syndicationFormatter;
             }
 
             public void Dispose()
@@ -48,7 +48,7 @@ namespace SimpleAtomPubSub.Subscription
                     return false;
 
                 var feedData = Environment.Environment.Current.DownloadString(_nextUrlToRead);
-                Current = _syndication.Build(feedData);
+                Current = _syndicationFormatter.Build(feedData);
                 _nextUrlToRead = Current.PreviousUri;
 
                 return true;

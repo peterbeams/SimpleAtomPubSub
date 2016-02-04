@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using SimpleAtomPubSub.Subscription;
+using SimpleAtomPubSub.Subscriber.Handlers;
 
 namespace SimpleAtomPubSub.Tests.Subscription
 {

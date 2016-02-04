@@ -3,21 +3,21 @@ using Moq;
 using NUnit.Framework;
 using SimpleAtomPubSub.Environment;
 using SimpleAtomPubSub.Formatters;
-using SimpleAtomPubSub.Persistance;
-using SimpleAtomPubSub.Subscription;
+using SimpleAtomPubSub.Publisher.Persistance;
+using SimpleAtomPubSub.Subscriber.Feed;
 
 namespace SimpleAtomPubSub.Tests.Subscription
 {
     [TestFixture]
     public class FeedChainTests
     {
-        protected Mock<ISyndication> syndication;
+        protected Mock<ISyndicationFormatter> syndication;
         protected Mock<IEnvironment> environment;
 
         [SetUp]
         public void SetUp()
         {
-            syndication = new Mock<ISyndication>();
+            syndication = new Mock<ISyndicationFormatter>();
             environment = new Mock<IEnvironment>();
             SimpleAtomPubSub.Environment.Environment.Current = environment.Object;
         }

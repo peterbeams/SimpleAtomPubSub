@@ -55,8 +55,10 @@
     <Compile Include="Serialization\SimpleXmlMessageSerializaionTests.cs" />
     <Compile Include="Subscription\EmptyHandlerCollectionTests.cs" />
     <Compile Include="Subscription\EventFeedSubscriptionTests.cs" />
+    <Compile Include="Subscription\FailureChannelTests.cs" />
     <Compile Include="Subscription\FeedChainTests.cs" />
     <Compile Include="Subscription\MultipleHandlerCollectionTests.cs" />
+    <Compile Include="Subscription\ProcessingChannelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -46,19 +46,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configure.cs" />
+    <Compile Include="Subscriber\DeadLetter\FailureChannel.cs" />
     <Compile Include="Environment\Environment.cs" />
     <Compile Include="Environment\EnvironmentImpl.cs" />
     <Compile Include="Environment\IEnvironment.cs" />
-    <Compile Include="Feed\EventFeed.cs" />
-    <Compile Include="Feed\IEventFeed.cs" />
+    <Compile Include="Publisher\Feed\EventFeed.cs" />
+    <Compile Include="Publisher\Feed\IEventFeed.cs" />
     <Compile Include="Formatters\AtomFormatter.cs" />
-    <Compile Include="Formatters\ISyndication.cs" />
+    <Compile Include="Formatters\ISyndicationFormatter.cs" />
     <Compile Include="Formatters\RawSyndicationContent.cs" />
-    <Compile Include="Handler\IHandler.cs" />
-    <Compile Include="Persistance\FeedData.cs" />
-    <Compile Include="Persistance\IEventPersistance.cs" />
-    <Compile Include="Persistance\Message.cs" />
-    <Compile Include="Persistance\SqlPersistance.cs" />
+    <Compile Include="Subscriber\DeadLetter\MessageFailedEventArgs.cs" />
+    <Compile Include="Subscriber\Handlers\IHandler.cs" />
+    <Compile Include="Publisher\Persistance\FeedData.cs" />
+    <Compile Include="Publisher\Persistance\IEventPersistance.cs" />
+    <Compile Include="Publisher\Persistance\Message.cs" />
+    <Compile Include="Publisher\Persistance\SqlPersistance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\IMessageDeserializer.cs" />
     <Compile Include="Serialization\IMessageSerializer.cs" />
@@ -77,16 +79,19 @@
     <Compile Include="Serialization\Xml.Net\XmlConvertIgnoredAttribute.cs" />
     <Compile Include="Serialization\Xml.Net\XmlConvertKeyValueElementAttribute.cs" />
     <Compile Include="Serialization\Xml.Net\XmlConvertOptions.cs" />
-    <Compile Include="Subscription\EventFeedSubscription.cs" />
-    <Compile Include="Subscription\FeedChain.cs" />
-    <Compile Include="Subscription\FeedChainFactory.cs" />
-    <Compile Include="Subscription\HandlerCollection.cs" />
-    <Compile Include="Subscription\IEventFeedSubscription.cs" />
-    <Compile Include="Subscription\IFeedChainFactory.cs" />
+    <Compile Include="Subscriber\Persistance\IDeadLetterPersistance.cs" />
+    <Compile Include="Subscriber\Persistance\SqlPersistance.cs" />
+    <Compile Include="Subscriber\Subscription\EventFeedObserver.cs" />
+    <Compile Include="Subscriber\Feed\FeedChain.cs" />
+    <Compile Include="Subscriber\Feed\FeedChainFactory.cs" />
+    <Compile Include="Subscriber\Handlers\HandlerCollection.cs" />
+    <Compile Include="Subscriber\Subscription\IEventFeedSubscription.cs" />
+    <Compile Include="Subscriber\Feed\IFeedChainFactory.cs" />
+    <Compile Include="Subscriber\Subscription\ProcessingChannel.cs" />
     <Compile Include="TypeScanningExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Persistance\DDL.sql" />
+    <EmbeddedResource Include="Publisher\Persistance\DDL.sql" />
     <None Include="Serialization\Xml.Net\License.txt" />
   </ItemGroup>
   <ItemGroup>

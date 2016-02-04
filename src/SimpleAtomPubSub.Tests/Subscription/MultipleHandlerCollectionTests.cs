@@ -1,8 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 using SimpleAtomPubSub.Environment;
-using SimpleAtomPubSub.Handler;
-using SimpleAtomPubSub.Subscription;
+using SimpleAtomPubSub.Subscriber.Handlers;
 
 namespace SimpleAtomPubSub.Tests.Subscription
 {

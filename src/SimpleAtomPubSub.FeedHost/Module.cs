@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SimpleAtomPubSub.Feed;
+using SimpleAtomPubSub.Publisher.Feed;
 
 namespace SimpleAtomPubSub.FeedHost
 {

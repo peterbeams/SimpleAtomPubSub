@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 
-namespace SimpleAtomPubSub.Persistance
+namespace SimpleAtomPubSub.Publisher.Persistance
 {
     public class SqlPersistance : IEventPersistance
     {

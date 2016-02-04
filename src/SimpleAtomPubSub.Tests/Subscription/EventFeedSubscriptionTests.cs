@@ -3,38 +3,31 @@ using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using SimpleAtomPubSub.Formatters;
-using SimpleAtomPubSub.Handler;
-using SimpleAtomPubSub.Persistance;
+using SimpleAtomPubSub.Publisher.Persistance;
 using SimpleAtomPubSub.Serialization;
-using SimpleAtomPubSub.Subscription;
+using SimpleAtomPubSub.Subscriber.Feed;
+using SimpleAtomPubSub.Subscriber.Handlers;
+using SimpleAtomPubSub.Subscriber.Subscription;
 
 namespace SimpleAtomPubSub.Tests.Subscription
 {
     [TestFixture]
     public class EventFeedSubscriptionTests
     {
-        private EventFeedSubscription target;
+        private EventFeedObserver target;
         private Mock<IFeedChainFactory> feedChainFactory;
-        private Mock<ISyndication> syndication;
-        private Mock<IMessageDeserializer> deserializer;
-        private Mock<IHandler<object>> handlers;
+        private Mock<ISyndicationFormatter> syndication;
+        private Mock<EventHandler<Message>> messageReceivedHandler;
 
         [SetUp]
         public void SetUp()
         {
             feedChainFactory = new Mock<IFeedChainFactory>();
-            syndication = new Mock<ISyndication>();
-            deserializer = new Mock<IMessageDeserializer>();
-            handlers = new Mock<IHandler<object>>(MockBehavior.Strict);
+            syndication = new Mock<ISyndicationFormatter>();
+            messageReceivedHandler = new Mock<EventHandler<Message>>(MockBehavior.Strict);
 
-            target = new EventFeedSubscription()
-            {
-                Url = new Uri("https://feeds.sample.com/"),
-                FeedChainFactory = feedChainFactory.Object,
-                Syndication = syndication.Object,
-                Deserializer = deserializer.Object,
-                Handlers = handlers.Object
-            };
+            target = new EventFeedObserver(new Uri("https://feeds.sample.com/"), syndication.Object, feedChainFactory.Object);
+            target.EventReceived += messageReceivedHandler.Object;
         }
 
         [Test]
@@ -55,29 +48,20 @@ namespace SimpleAtomPubSub.Tests.Subscription
                     }
                 }
             };
-
-            var messageA = new object();
-            deserializer.Setup(m => m.Deserialize("A")).Returns(messageA);
-            var messageB = new object();
-            deserializer.Setup(m => m.Deserialize("B")).Returns(messageB);
-            var messageC = new object();
-            deserializer.Setup(m => m.Deserialize("C")).Returns(messageC);
-            var messageD = new object();
-            deserializer.Setup(m => m.Deserialize("D")).Returns(messageD);
-
+            
             feedChainFactory.Setup(m => m.Get("https://feeds.sample.com/", syndication.Object)).Returns(feeds);
 
-            handlers.Setup(m => m.Handle(messageA));
-            handlers.Setup(m => m.Handle(messageB));
-            handlers.Setup(m => m.Handle(messageC));
-            handlers.Setup(m => m.Handle(messageD));
+            messageReceivedHandler.Setup(m => m(target, feeds[0].Messages[0]));
+            messageReceivedHandler.Setup(m => m(target, feeds[0].Messages[1]));
+            messageReceivedHandler.Setup(m => m(target, feeds[1].Messages[0]));
+            messageReceivedHandler.Setup(m => m(target, feeds[1].Messages[1]));
+            
+            target.ReceiveLatestEvents();
 
-            target.HandleLatestEvents();
-
-            handlers.Verify(m => m.Handle(messageA), Times.Once);
-            handlers.Verify(m => m.Handle(messageB), Times.Once);
-            handlers.Verify(m => m.Handle(messageC), Times.Once);
-            handlers.Verify(m => m.Handle(messageD), Times.Once);
+            messageReceivedHandler.Verify(m => m(target, feeds[0].Messages[0]), Times.Once);
+            messageReceivedHandler.Verify(m => m(target, feeds[0].Messages[1]), Times.Once);
+            messageReceivedHandler.Verify(m => m(target, feeds[1].Messages[0]), Times.Once);
+            messageReceivedHandler.Verify(m => m(target, feeds[1].Messages[1]), Times.Once);
         }
 
         [Test]
@@ -106,26 +90,18 @@ namespace SimpleAtomPubSub.Tests.Subscription
                 }
             };
 
-            var messageA = new object();
-            deserializer.Setup(m => m.Deserialize("A")).Returns(messageA);
-            var messageB = new object();
-            deserializer.Setup(m => m.Deserialize("B")).Returns(messageB);
-            var messageC = new object();
-            deserializer.Setup(m => m.Deserialize("C")).Returns(messageC);
+            messageReceivedHandler.Setup(m => m(target, feeds[0].Messages[0]));
+            messageReceivedHandler.Setup(m => m(target, feeds[0].Messages[1]));
+            messageReceivedHandler.Setup(m => m(target, feeds[1].Messages[0]));
 
             feedChainFactory.Setup(m => m.Get("https://feeds.sample.com/", syndication.Object)).Returns(feeds);
-
-
-            handlers.Setup(m => m.Handle(messageA));
-            handlers.Setup(m => m.Handle(messageB));
-            handlers.Setup(m => m.Handle(messageC));
             
             target.LastObservedEventId = new Guid("40000000-0000-0000-0000-000000000000");
-            target.HandleLatestEvents();
+            target.ReceiveLatestEvents();
 
-            handlers.Verify(m => m.Handle(messageA), Times.Once);
-            handlers.Verify(m => m.Handle(messageB), Times.Once);
-            handlers.Verify(m => m.Handle(messageC), Times.Once);
+            messageReceivedHandler.Verify(m => m(target, feeds[0].Messages[0]), Times.Once);
+            messageReceivedHandler.Verify(m => m(target, feeds[0].Messages[1]), Times.Once);
+            messageReceivedHandler.Verify(m => m(target, feeds[1].Messages[0]), Times.Once);
         }
     }
 }

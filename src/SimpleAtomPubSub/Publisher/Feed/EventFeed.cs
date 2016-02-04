@@ -1,9 +1,9 @@
 ﻿using System;
 using SimpleAtomPubSub.Formatters;
-using SimpleAtomPubSub.Persistance;
+using SimpleAtomPubSub.Publisher.Persistance;
 using SimpleAtomPubSub.Serialization;
 
-namespace SimpleAtomPubSub.Feed
+namespace SimpleAtomPubSub.Publisher.Feed
 {
     public class EventFeed : IEventFeed
     {
@@ -15,7 +15,7 @@ namespace SimpleAtomPubSub.Feed
 
         public IEventPersistance EventPeristance { get; set; }
         public IMessageSerializer Serializer { get; set; }
-        public ISyndication Syndication { get; set; }
+        public ISyndicationFormatter SyndicationFormatter { get; set; }
 
         public void Publish<TEvent>(TEvent e)
         {
@@ -55,7 +55,7 @@ namespace SimpleAtomPubSub.Feed
         private string GetFeed(string uri, Uri baseUri)
         {
             var messages = EventPeristance.GetMessages(uri);
-            return Syndication.Build(messages, baseUri);
+            return SyndicationFormatter.Build(messages, baseUri);
         }
     }
 }

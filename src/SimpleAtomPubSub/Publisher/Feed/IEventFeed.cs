@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimpleAtomPubSub.Feed
+namespace SimpleAtomPubSub.Publisher.Feed
 {
     public interface IEventFeed
     {

@@ -1,4 +1,4 @@
-﻿namespace SimpleAtomPubSub.Handler
+﻿namespace SimpleAtomPubSub.Subscriber.Handlers
 {
     public interface IHandler<TEvent>
     {

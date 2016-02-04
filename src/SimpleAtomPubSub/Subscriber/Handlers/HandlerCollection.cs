@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SimpleAtomPubSub.Handler;
 
-namespace SimpleAtomPubSub.Subscription
+namespace SimpleAtomPubSub.Subscriber.Handlers
 {
     public class HandlerCollection : List<Type>, IHandler<object>
     {

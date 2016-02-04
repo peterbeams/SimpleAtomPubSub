@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using SimpleAtomPubSub.Handler;
+using SimpleAtomPubSub.Subscriber.Handlers;
 
 namespace SimpleAtomPubSub
 {

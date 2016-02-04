@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SimpleAtomPubSub.Persistance
+namespace SimpleAtomPubSub.Publisher.Persistance
 {
     public class Message
     {

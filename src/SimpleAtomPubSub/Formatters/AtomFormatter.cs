@@ -4,11 +4,11 @@ using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using System.Xml.Linq;
-using SimpleAtomPubSub.Persistance;
+using SimpleAtomPubSub.Publisher.Persistance;
 
 namespace SimpleAtomPubSub.Formatters
 {
-    public class AtomFormatter : ISyndication
+    public class AtomFormatter : ISyndicationFormatter
     {
         private const string ContentType = "application/atom+xml";
         private const string NextInArchiveRelationshipType = "next-archive";
@@ -70,7 +70,7 @@ namespace SimpleAtomPubSub.Formatters
                                 CreatedAt = x.LastUpdatedTime.UtcDateTime,
                                 Id = Guid.Parse(x.Id)
                             };
-                        })
+                        }).ToArray()
                     };
                 }
             }

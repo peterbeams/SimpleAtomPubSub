@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SimpleAtomPubSub.Persistance
+namespace SimpleAtomPubSub.Publisher.Persistance
 {
     public class FeedData
     {
@@ -9,6 +9,6 @@ namespace SimpleAtomPubSub.Persistance
         public DateTime DateCreated { get; set; }
         public string PreviousUri { get; set; }
         public string NextUri { get; set; }
-        public IEnumerable<Message> Messages { get; set; }
+        public IList<Message> Messages { get; set; }
     }
 }

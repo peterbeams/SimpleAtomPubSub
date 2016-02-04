@@ -2,9 +2,9 @@
 using Moq;
 using NUnit.Framework;
 using SimpleAtomPubSub.Environment;
-using SimpleAtomPubSub.Feed;
 using SimpleAtomPubSub.Formatters;
-using SimpleAtomPubSub.Persistance;
+using SimpleAtomPubSub.Publisher.Feed;
+using SimpleAtomPubSub.Publisher.Persistance;
 using SimpleAtomPubSub.Serialization;
 
 namespace SimpleAtomPubSub.Tests.Feed
@@ -14,7 +14,7 @@ namespace SimpleAtomPubSub.Tests.Feed
     {
         protected Mock<IMessageSerializer> serializer;
         protected Mock<IEventPersistance> persistance;
-        protected Mock<ISyndication> syndication;
+        protected Mock<ISyndicationFormatter> syndication;
         protected Mock<IEnvironment> environment;
         protected EventFeed target;
 
@@ -23,7 +23,7 @@ namespace SimpleAtomPubSub.Tests.Feed
         {
             serializer = new Mock<IMessageSerializer>();
             persistance = new Mock<IEventPersistance>();
-            syndication = new Mock<ISyndication>();
+            syndication = new Mock<ISyndicationFormatter>();
             environment = new Mock<IEnvironment>();
 
             SimpleAtomPubSub.Environment.Environment.Current = environment.Object;
@@ -32,7 +32,7 @@ namespace SimpleAtomPubSub.Tests.Feed
             {
                 EventPeristance = persistance.Object,
                 Serializer = serializer.Object,
-                Syndication = syndication.Object
+                SyndicationFormatter = syndication.Object
             };
         }
 
