@@ -74,6 +74,8 @@ namespace SimpleAtomPubSub
             //process failed messages again when they're reader
             failureChannel.MessageReadyForRetry += processingChannel.ProcessEvent;
 
+            failureChannel.Poll();
+
             return subscription;
         }
     }

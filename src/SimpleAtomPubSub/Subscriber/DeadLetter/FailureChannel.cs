@@ -27,8 +27,8 @@ namespace SimpleAtomPubSub.Subscriber.DeadLetter
         {
             do
             {
-                var x = await HandleFailuresReadyToReProcessAsync();
                 Thread.Sleep(PollingInterval);
+                var x = await HandleFailuresReadyToReProcessAsync();
             } while (true);
         }
 
