@@ -30,7 +30,7 @@ namespace SimpleAtomPubSub.Subscriber.Persistance
             else
             begin
 	            insert into dbo.DeadLetter
-	            (id,body,createdAt,lastAttemptedProcessingAt,feedUrl,processingAttemptCount,readyToRetry,exception,exceptionStack,beingRetried])
+	            (id,body,createdAt,lastAttemptedProcessingAt,feedUrl,processingAttemptCount,readyToRetry,exception,exceptionStack,beingRetried)
 	            values
 	            (@Id,@Body,@CreatedAt,@LastAttemptedProcessingAt,@FeedUrl,1,0,@Exception,@ExceptionStack,0)
             end
